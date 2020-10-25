@@ -29,7 +29,6 @@ const Template = ({ text, theme, backgroundColor }: Props) => {
   )
 }
 
-// Each story then reuses that template
 export const Default = Template.bind({})
 
 Default.args = {
