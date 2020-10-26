@@ -29,7 +29,7 @@ interface Props {
 }
 
 export default function HeatMap() {
-  const yValues = [
+  const xValues = [
     '1am',
     '2am',
     '3am',
@@ -55,7 +55,7 @@ export default function HeatMap() {
     '11am',
     '12am'
   ]
-  const xValues = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
+  const yValues = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 
   return (
     <ThemeContext.Provider value={themes}>
