@@ -1,4 +1,10 @@
-import React, { useContext, useRef, useState, useEffect } from 'react'
+import React, {
+  useContext,
+  useRef,
+  useState,
+  useEffect,
+  CSSProperties
+} from 'react'
 import Box from './Box'
 import { ThemeContext } from './ThemeContext'
 
@@ -13,23 +19,12 @@ interface Props {
 export default function Grid({ xValues, yValues }: Props) {
   // Used to set all y labels to the width of the longest y label
   const [maxYLabelWidth, setMaxYLabelWidth] = useState<number>()
+
   const { unit, labelMargin } = useContext(ThemeContext)
-  const grid = yValues.map((value, index) => {
-    const isFinal = yValues.length === index + 1
-    return (
-      <Row
-        yLabel={value}
-        xValues={xValues}
-        withXLabels={isFinal}
-        key={value}
-        maxYLabelWidth={maxYLabelWidth}
-        setMaxYLabelWidth={setMaxYLabelWidth}
-      />
-    )
-  })
+
   return (
     <div>
-      {grid}
+      {renderGrid()}
       <XLabels
         xLabels={xValues}
         style={{
@@ -39,15 +34,23 @@ export default function Grid({ xValues, yValues }: Props) {
       />
     </div>
   )
+
+  function renderGrid() {
+    return yValues.map((value) => {
+      return (
+        <Row
+          yLabel={value}
+          xValues={xValues}
+          key={value}
+          maxYLabelWidth={maxYLabelWidth}
+          setMaxYLabelWidth={setMaxYLabelWidth}
+        />
+      )
+    })
+  }
 }
 
-function Row({
-  yLabel,
-  xValues,
-  withXLabels,
-  maxYLabelWidth,
-  setMaxYLabelWidth
-}: any) {
+function Row({ yLabel, xValues, maxYLabelWidth, setMaxYLabelWidth }: any) {
   const ref = useRef(null)
   const { unit, labelMargin } = useContext(ThemeContext)
   useEffect(() => {
@@ -74,21 +77,26 @@ function Row({
 }
 
 function XLabels({ xLabels, style }: { xLabels: string[]; style: any }) {
-  const { boxBorderWidth, boxWidth, unit } = useContext(ThemeContext)
+  const { boxBorderWidth, boxWidth, unit, labelSize } = useContext(ThemeContext)
   const totalBoxLength = boxBorderWidth * 2 + boxWidth
+
   return (
     <div style={{ display: 'flex', ...style }}>
       {xLabels.map((label) => (
-        <div
-          style={{
-            wordBreak: 'break-all',
-            width: totalBoxLength + unit
-          }}
-          key={label}
-        >
+        <div style={styles().label} key={label}>
           {label}
         </div>
       ))}
     </div>
   )
+
+  function styles() {
+    return {
+      label: {
+        wordBreak: 'break-all',
+        width: totalBoxLength + unit,
+        fontSize: labelSize + unit
+      } as CSSProperties
+    }
+  }
 }
