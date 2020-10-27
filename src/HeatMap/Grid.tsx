@@ -24,9 +24,13 @@ export default function Grid({ xValues, yValues }: Props) {
 
   return (
     <div>
-      {renderGrid()}
+      <div style={{ display: 'flex' }}>
+        <YLabels labels={yValues} />
+        <div>{renderGrid()}</div>
+      </div>
+
       <XLabels
-        xLabels={xValues}
+        labels={xValues}
         style={{
           marginLeft: (maxYLabelWidth || 0) + labelMargin + unit,
           marginTop: labelMargin + unit
@@ -52,7 +56,8 @@ export default function Grid({ xValues, yValues }: Props) {
 
 function Row({ yLabel, xValues, maxYLabelWidth, setMaxYLabelWidth }: any) {
   const ref = useRef(null)
-  const { unit, labelMargin } = useContext(ThemeContext)
+  const { unit, labelMargin, labelSize } = useContext(ThemeContext)
+
   useEffect(() => {
     // @ts-ignore
     const width = ref.current?.offsetWidth
@@ -63,26 +68,72 @@ function Row({ yLabel, xValues, maxYLabelWidth, setMaxYLabelWidth }: any) {
 
   return (
     <div style={{ display: 'flex' }}>
-      <div
-        ref={ref}
-        style={{ marginRight: labelMargin, width: maxYLabelWidth + unit }}
-      >
+      {/* <div ref={ref} style={styles().label}>
         {yLabel}
-      </div>
+      </div> */}
       {xValues.map((label: any) => (
         <Box key={label} />
       ))}
     </div>
   )
+
+  function styles() {
+    return {
+      label: {
+        marginRight: labelMargin,
+        width: maxYLabelWidth + unit,
+        fontSize: labelSize
+      } as CSSProperties
+    }
+  }
 }
 
-function XLabels({ xLabels, style }: { xLabels: string[]; style: any }) {
+function YLabels({ labels, style }: any) {
+  const {
+    unit,
+    labelMargin,
+    labelSize,
+    boxHeight,
+    boxBorderWidth
+  } = useContext(ThemeContext)
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', ...style }}>
+      {labels.map((label: any) => (
+        <div style={styles().label} key={label}>
+          {label}
+        </div>
+      ))}
+    </div>
+  )
+
+  function styles() {
+    const height = boxHeight + boxBorderWidth * 2
+    return {
+      label: {
+        height: height + unit,
+        marginRight: labelMargin,
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: labelSize
+      } as CSSProperties
+    }
+  }
+}
+
+function XLabels({
+  labels,
+  style
+}: {
+  labels: string[]
+  style: CSSProperties
+}) {
   const { boxBorderWidth, boxWidth, unit, labelSize } = useContext(ThemeContext)
   const totalBoxLength = boxBorderWidth * 2 + boxWidth
 
   return (
     <div style={{ display: 'flex', ...style }}>
-      {xLabels.map((label) => (
+      {labels.map((label) => (
         <div style={styles().label} key={label}>
           {label}
         </div>
