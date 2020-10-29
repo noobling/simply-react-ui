@@ -33,7 +33,7 @@ export interface HeatMapTheme {
 
 export const themes: HeatMapTheme = {
   boxHeight: 30,
-  boxWidth: 40,
+  boxWidth: 30,
   boxBorderWidth: 1,
   boxBorderColor: 'black',
   boxBorderStyle: 'solid',

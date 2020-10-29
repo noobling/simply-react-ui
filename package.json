@@ -72,6 +72,7 @@
     "dist"
   ],
   "dependencies": {
-    "@storybook/addon-storysource": "^6.0.27"
+    "@storybook/addon-storysource": "^6.0.27",
+    "csstype": "^3.0.4"
   }
 }

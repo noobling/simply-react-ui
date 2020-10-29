@@ -1,10 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, CSSProperties } from 'react'
+import * as css from 'csstype'
 import { ThemeContext } from './ThemeContext'
 
 /**
  * A simple square
  */
-export default function Box() {
+export default function Box({ background }: CSSProperties) {
   const {
     boxHeight,
     boxWidth,
@@ -20,7 +21,8 @@ export default function Box() {
         height: boxHeight + unit,
         borderWidth: boxBorderWidth + unit,
         borderStyle: boxBorderStyle,
-        borderColor: boxBorderColor
+        borderColor: boxBorderColor,
+        background
       }}
     />
   )
