@@ -23,20 +23,37 @@ export interface LogViewerProps {
    * Override the default themes' properties
    */
   customTheme?: CustomTheme<Theme>
+  /**
+   * Scroll to bottom on rerender useful for log streams
+   *
+   * @default false
+   */
+  autoScroll?: boolean
 }
 
 export const LogViewer: React.FC<
   LogViewerProps & React.ComponentProps<'div'>
-> = ({ text = '', theme, customTheme, ...rest }) => {
+> = ({ text = '', theme, customTheme, autoScroll = false, ...rest }) => {
   const lines = text?.split(/\r?\n/)
   const selectedTheme = theme === 'light' ? themes.light : themes.dark
   const userTheme = { ...selectedTheme, ...customTheme }
+  const ref = React.useRef(null)
+
+  React.useEffect(() => {
+    if (ref.current && autoScroll)
+      // @ts-ignore already checked if its null
+      ref.current.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
   return (
     <ThemeContext.Provider value={userTheme}>
       <Container {...rest}>
-        {lines.map((line, index) => (
-          <LineItem key={index} text={line} number={index + 1} />
-        ))}
+        <>
+          {lines.map((line, index) => (
+            <LineItem key={index} text={line} number={index + 1} />
+          ))}
+          <div ref={ref} />
+        </>
       </Container>
     </ThemeContext.Provider>
   )

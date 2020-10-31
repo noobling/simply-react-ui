@@ -1,10 +1,10 @@
-import { LogViewer, LogViewerProps } from './index'
+import { Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import { Meta } from '@storybook/react/types-6-0'
+import { LogViewer } from './index'
 export default {
   title: 'LogViewer',
   component: LogViewer
-} as Meta
+}
 // We create a “template” of how args map to rendering
 const text = `yarn run v1.22.4
 $ start-server-and-test serve http://localhost:8000 cy:run
@@ -16,27 +16,45 @@ npm WARN lifecycle The node binary used for scripts is /tmp/yarn--1599295401272-
 
 > gatsby-starter-default@0.1.0 serve /home/runner/work/rebranch/rebranch
 > gatsby serve -p 8000`
-interface Props extends LogViewerProps {
-  backgroundColor: string
+
+const backgroundColor = {
+  description: 'Play around with the background color',
+  control: { type: 'color' }
 }
-const Template = ({ text, theme, backgroundColor }: Props) => {
+
+const Template = ({
+  text,
+  theme,
+  autoScroll = false,
+  backgroundColor,
+  ...rest
+}: any) => {
   return (
     <LogViewer
       text={text}
       theme={theme}
+      autoScroll={autoScroll}
       customTheme={{ background: backgroundColor || '#242a2e' }}
+      {...rest}
     />
   )
 }
 
-export const Default = Template.bind({})
-
+export const Default: Story<any> = Template.bind({})
 Default.args = {
-  text: text
+  text
 }
 Default.argTypes = {
-  backgroundColor: {
-    description: 'Play around with the background color',
-    control: { type: 'color' }
-  }
+  backgroundColor
+}
+
+export const AutoScroll: Story<any> = Template.bind({})
+
+AutoScroll.args = {
+  text,
+  autoScroll: true,
+  style: { height: '100px', overflowY: 'scroll', background: 'black' }
+}
+AutoScroll.argTypes = {
+  backgroundColor
 }
