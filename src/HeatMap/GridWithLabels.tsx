@@ -1,24 +1,23 @@
 import React, { CSSProperties, useContext } from 'react'
 import Box from './Box'
 import { ThemeContext } from './ThemeContext'
+import { ColorMap } from '.'
 
 interface Props {
   xLabels: string[]
   yLabels: string[]
+  data: GridData
+  colorMap: ColorMap
 }
 
-export default function GridWithLabels({ xLabels, yLabels }: Props) {
+export default function GridWithLabels({
+  xLabels,
+  yLabels,
+  data,
+  colorMap
+}: Props) {
   const { unit, labelMargin } = useContext(ThemeContext)
-  const data = {
-    Mon: {
-      '11am': 'peak',
-      '12am': 'offpeak'
-    },
-    Tues: {
-      '1pm': 'peak'
-    }
-  }
-  const colorMap = { peak: 'green', offpeak: 'black' }
+  console.log(data)
   return (
     <div style={{ display: 'flex' }}>
       <YLabels labels={yLabels} />
@@ -40,13 +39,17 @@ export default function GridWithLabels({ xLabels, yLabels }: Props) {
   )
 }
 
+export interface GridData {
+  [key: string]: { [key: string]: string }
+}
+
 interface GridProps {
   yLabels: string[]
   xLabels: string[]
   /**
    * The values should correspond to a key in colorMap
    */
-  data: { [key: string]: { [key: string]: string } }
+  data: GridData
   colorMap: { [key: string]: string }
 }
 
@@ -56,11 +59,10 @@ function Grid({ yLabels, xLabels, data, colorMap }: GridProps) {
       {yLabels.map((yLabel) => (
         <div key={yLabel} style={{ display: 'flex' }}>
           {xLabels.map((xLabel) => {
-            console.log(colorMap[data[yLabel]?.[xLabel]])
             return (
               <Box
                 key={xLabel}
-                background={colorMap[data[yLabel]?.[xLabel]] ?? 'white'}
+                background={colorMap[data[xLabel]?.[yLabel]] ?? 'white'}
               />
             )
           })}
