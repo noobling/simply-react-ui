@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
 import { ThemeContext, themes } from './ThemeContext'
 import GridWithLabels from './GridWithLabels'
+import { mapCoordsToGrid } from './Util'
 export type HeatMapValue = string | number
 
-interface HeatMapData {
+export interface Coord {
   x: HeatMapValue
   y: HeatMapValue
   z: string
@@ -13,19 +14,19 @@ export interface ColorMap {
   [key: string]: string
 }
 
-interface Props {
+export interface HeatMapProps {
   /**
    * Label displayed on the y axis
    */
-  yLabel: string
+  yLabels: string[]
   /**
    * Label displayed on the x axis
    */
-  xLabel: string
+  xLabels: string[]
   /**
    * Data to display on heat map.
    */
-  data: HeatMapData[]
+  data: Coord[]
   /**
    * Mapping for z values and their color
    *
@@ -35,38 +36,21 @@ interface Props {
   colorMap: ColorMap
 }
 
-export default function HeatMap() {
-  const xValues = [
-    '1am',
-    '2am',
-    '3am',
-    '4am',
-    '5am',
-    '6am',
-    '7am',
-    '8am',
-    '9am',
-    '10am',
-    '11am',
-    '12pm',
-    '1pm',
-    '2pm',
-    '3pm',
-    '4pm',
-    '5pm',
-    '6pm',
-    '7pm',
-    '8pm',
-    '9pm',
-    '10pm',
-    '11pm',
-    '12am'
-  ]
-  const yValues = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
-
+export default function HeatMap({
+  yLabels,
+  xLabels,
+  data,
+  colorMap
+}: HeatMapProps) {
+  const grid = mapCoordsToGrid(data)
   return (
     <ThemeContext.Provider value={themes}>
-      <GridWithLabels xLabels={xValues} yLabels={yValues} />
+      <GridWithLabels
+        xLabels={xLabels}
+        yLabels={yLabels}
+        data={grid}
+        colorMap={colorMap}
+      />
     </ThemeContext.Provider>
   )
 }
