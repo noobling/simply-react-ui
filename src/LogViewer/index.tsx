@@ -31,9 +31,13 @@ export interface LogViewerProps {
   autoScroll?: boolean
 }
 
-export const LogViewer: React.FC<
-  LogViewerProps & React.ComponentProps<'div'>
-> = ({ text = '', theme, customTheme, autoScroll = false, ...rest }) => {
+const LogViewer: React.FC<LogViewerProps & React.ComponentProps<'div'>> = ({
+  text = '',
+  theme,
+  customTheme,
+  autoScroll = false,
+  ...rest
+}) => {
   const lines = text?.split(/\r?\n/)
   const selectedTheme = theme === 'light' ? themes.light : themes.dark
   const userTheme = { ...selectedTheme, ...customTheme }
@@ -42,19 +46,21 @@ export const LogViewer: React.FC<
   React.useEffect(() => {
     if (ref.current && autoScroll)
       // @ts-ignore already checked if its null
-      ref.current.scrollIntoView({ behavior: 'smooth' })
-  }, [])
+      setTimeout(() => ref.current.scrollIntoView({ behavior: 'smooth' }), 0)
+  }, [text])
 
   return (
     <ThemeContext.Provider value={userTheme}>
       <Container {...rest}>
-        <>
+        <div>
           {lines.map((line, index) => (
             <LineItem key={index} text={line} number={index + 1} />
           ))}
           <div ref={ref} />
-        </>
+        </div>
       </Container>
     </ThemeContext.Provider>
   )
 }
+
+export default LogViewer

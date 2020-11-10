@@ -1,5 +1,4 @@
 import React, { useContext, CSSProperties } from 'react'
-import * as css from 'csstype'
 import { ThemeContext } from './ThemeContext'
 
 /**
