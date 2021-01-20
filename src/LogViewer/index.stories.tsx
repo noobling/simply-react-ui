@@ -1,6 +1,6 @@
 import { Story } from '@storybook/react/types-6-0'
 import React from 'react'
-import { LogViewer } from './index'
+import LogViewer from '.'
 export default {
   title: 'LogViewer',
   component: LogViewer
@@ -25,18 +25,27 @@ const backgroundColor = {
 const Template = ({
   text,
   theme,
-  autoScroll = false,
+  stickyBottom = false,
   backgroundColor,
   ...rest
 }: any) => {
   return (
-    <LogViewer
-      text={text}
-      theme={theme}
-      autoScroll={autoScroll}
-      customTheme={{ background: backgroundColor || '#242a2e' }}
-      {...rest}
-    />
+    <>
+      <LogViewer
+        text={text}
+        theme={theme}
+        stickyBottom={stickyBottom}
+        customTheme={{ background: backgroundColor || '#242a2e' }}
+        {...rest}
+      />
+      <LogViewer
+        text={text}
+        theme={theme}
+        stickyBottom={stickyBottom}
+        customTheme={{ background: backgroundColor || '#242a2e' }}
+        {...rest}
+      />
+    </>
   )
 }
 
@@ -48,13 +57,13 @@ Default.argTypes = {
   backgroundColor
 }
 
-export const AutoScroll: Story<any> = Template.bind({})
+export const StickyBottom: Story<any> = Template.bind({})
 
-AutoScroll.args = {
+StickyBottom.args = {
   text,
-  autoScroll: true,
+  stickyBottom: true,
   style: { height: '100px', overflowY: 'scroll', background: 'black' }
 }
-AutoScroll.argTypes = {
+StickyBottom.argTypes = {
   backgroundColor
 }

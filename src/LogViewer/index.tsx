@@ -1,7 +1,6 @@
 import * as React from 'react'
 import LineItem from './LineItem'
-import Container from './Container'
-import { ThemeContext, themes, Theme } from './ThemeContext'
+import { Theme, ThemeContext, themes } from './ThemeContext'
 
 type CustomTheme<T> = {
   [P in keyof T]?: T[P]
@@ -24,41 +23,42 @@ export interface LogViewerProps {
    */
   customTheme?: CustomTheme<Theme>
   /**
-   * Scroll to bottom on rerender useful for log streams
+   * Stay at the bottom useful for log streams
    *
    * @default false
    */
-  autoScroll?: boolean
+  stickyBottom?: boolean
 }
 
 const LogViewer: React.FC<LogViewerProps & React.ComponentProps<'div'>> = ({
   text = '',
   theme,
   customTheme,
-  autoScroll = false,
+  stickyBottom: autoScroll = false,
   ...rest
 }) => {
+  const { background } = React.useContext(ThemeContext)
   const lines = text?.split(/\r?\n/)
   const selectedTheme = theme === 'light' ? themes.light : themes.dark
   const userTheme = { ...selectedTheme, ...customTheme }
   const ref = React.useRef(null)
 
   React.useEffect(() => {
-    if (ref.current && autoScroll)
-      // @ts-ignore already checked if its null
-      setTimeout(() => ref.current.scrollIntoView({ behavior: 'smooth' }), 0)
+    if (ref.current && autoScroll) {
+      setTimeout(() => {
+        // @ts-ignore already checked if its null
+        ref.current.scrollTop = ref.current.scrollHeight
+      }, 0)
+    }
   }, [text])
 
   return (
     <ThemeContext.Provider value={userTheme}>
-      <Container {...rest}>
-        <div>
-          {lines.map((line, index) => (
-            <LineItem key={index} text={line} number={index + 1} />
-          ))}
-          <div ref={ref} />
-        </div>
-      </Container>
+      <div style={{ background, padding: '1.5rem' }} {...rest} ref={ref}>
+        {lines.map((line, index) => (
+          <LineItem key={index} text={line} number={index + 1} />
+        ))}
+      </div>
     </ThemeContext.Provider>
   )
 }
