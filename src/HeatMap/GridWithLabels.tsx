@@ -17,7 +17,7 @@ export default function GridWithLabels({
   colorMap
 }: Props) {
   const { unit, labelMargin } = useContext(ThemeContext)
-  console.log(data)
+
   return (
     <div style={{ display: 'flex' }}>
       <YLabels labels={yLabels} />

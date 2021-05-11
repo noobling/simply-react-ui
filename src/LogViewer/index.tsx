@@ -37,23 +37,24 @@ export const LogViewer: React.FC<
   const lines = text?.split(/\r?\n/)
   const selectedTheme = theme === 'light' ? themes.light : themes.dark
   const userTheme = { ...selectedTheme, ...customTheme }
-  const ref = React.useRef(null)
+  const lastRef = React.useRef(null)
+  const containerRef = React.useRef(null)
 
   React.useEffect(() => {
-    if (ref.current && autoScroll)
+    if (lastRef.current && autoScroll)
       // @ts-ignore already checked if its null
-      ref.current.scrollIntoView({ behavior: 'smooth' })
-  }, [])
-
+      lastRef.current.scrollIntoView({ behavior: 'smooth' })
+  }, [lastRef.current, containerRef?.current?.clientHeight])
+  console.log(lastRef)
   return (
     <ThemeContext.Provider value={userTheme}>
       <Container {...rest}>
-        <>
+        <div ref={containerRef}>
           {lines.map((line, index) => (
             <LineItem key={index} text={line} number={index + 1} />
           ))}
-          <div ref={ref} />
-        </>
+          <div ref={lastRef} />
+        </div>
       </Container>
     </ThemeContext.Provider>
   )
