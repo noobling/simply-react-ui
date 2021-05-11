@@ -46,8 +46,10 @@ const LogViewer: React.FC<LogViewerProps & React.ComponentProps<'div'>> = ({
   React.useEffect(() => {
     if (ref.current && autoScroll) {
       setTimeout(() => {
-        // @ts-ignore already checked if its null
-        ref.current.scrollTop = ref.current.scrollHeight
+        if (ref.current) {
+          // @ts-ignore already checked if its null
+          ref.current.scrollTop = ref.current.scrollHeight
+        }
       }, 0)
     }
   }, [text])
