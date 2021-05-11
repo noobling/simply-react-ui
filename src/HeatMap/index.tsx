@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
-import { ThemeContext, themes } from './ThemeContext'
+import React from 'react'
 import GridWithLabels from './GridWithLabels'
+import { ThemeContext, themes } from './ThemeContext'
 import { mapCoordsToGrid } from './Util'
 export type HeatMapValue = string | number
 

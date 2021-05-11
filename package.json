@@ -1,6 +1,6 @@
 {
   "name": "simply-react-ui",
-  "version": "1.1.1",
+  "version": "1.1.7",
   "description": "Simple, high quality, 0 dependency react components you don&#x27;t normally find in a ui library",
   "author": "noobling",
   "license": "MIT",
@@ -66,13 +66,11 @@
     "react-dom": "^16.13.1",
     "react-is": "^17.0.0",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "@storybook/addon-storysource": "^6.0.27"
   },
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@storybook/addon-storysource": "^6.0.27",
-    "csstype": "^3.0.4"
-  }
+  "dependencies": {}
 }
